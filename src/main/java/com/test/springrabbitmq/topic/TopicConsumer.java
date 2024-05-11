@@ -7,7 +7,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
 @Component
-public class TopicCustomer
+public class TopicConsumer
 {
     // * means any 1 word matches
     // # means 0 or more word matches

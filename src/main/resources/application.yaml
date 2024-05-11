@@ -24,6 +24,9 @@ spring:
     username: hmall
     password: guest
     virtual-host: /hmall
+    listener:
+      simple:
+        prefetch: 1 # this force the consumer only fetch from the queue when consume finish, thus those higher performance consumer can handle more queue messages
   config:
     activate:
       on-profile: dev2
