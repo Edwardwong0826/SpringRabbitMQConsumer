@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class SpringRabbitMQConsumerApplication {
 
-	// run this spring boot application, go to test folder TestRabbitMQ each type to send the message only can see
+	// This application is the consumer client, and use SpringAMQP to declare the queues / exchange / binding to auto create them in RabbitMQ
 	public static void main(String[] args) {
 		SpringApplication.run(SpringRabbitMQConsumerApplication.class, args);
 	}
