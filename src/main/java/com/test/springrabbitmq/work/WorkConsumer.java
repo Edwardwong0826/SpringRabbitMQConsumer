@@ -25,9 +25,9 @@ public class WorkConsumer
         System.out.println("Simple queue message = " + message);
     }
 
-    // we can set in spring rabbit config prefetch = x
-    // to force the consumer only fetch from the queue when consume finish, thus those higher performance consumer can handle more queue messages and speed up process
-    // so need to wait slow consumer with round-rabin scheduling, so it doesn't accumulate on queue, this is one of the way, add more consumer enable this prefetch config
+    // We can set in spring rabbit config prefetch = x
+    // To force the consumer only fetch from the queue when consume finish, thus those higher performance consumer can handle more queue messages and speed up process
+    // So need to wait slow consumer with round-rabin scheduling, so it doesn't accumulate on queue, this is one of the way, add more consumer enable this prefetch config
     @RabbitListener(queues = "work.queue")
     public void listenWorkQueue1(String message) throws InterruptedException {
         System.out.println("Consumer 1 received Work queue message : " + message);
