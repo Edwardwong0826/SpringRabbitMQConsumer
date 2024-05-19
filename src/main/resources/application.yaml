@@ -27,6 +27,7 @@ spring:
     listener:
       simple:
         prefetch: 1 # this force the consumer only fetch from the queue when consume finish, thus those higher performance consumer can handle more queue messages
+        acknowledge-mode: auto # by default acknowledge mode was auto, we can set it to manual, auto or none
   config:
     activate:
       on-profile: dev2
