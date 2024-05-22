@@ -1,12 +1,16 @@
 package com.test.springrabbitmq.direct;
 
+import com.rabbitmq.client.Channel;
 import org.springframework.amqp.core.ExchangeTypes;
 import org.springframework.amqp.rabbit.annotation.Exchange;
 import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.annotation.QueueBinding;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.amqp.support.AmqpHeaders;
+import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
 @Component
 public class DirectConsumer
 {
@@ -46,7 +50,7 @@ public class DirectConsumer
             exchange = @Exchange(name = "hmall.direct", type = ExchangeTypes.DIRECT),
             key = {"red", "blue"}
     ))
-    public void listenDirectQueue1(String message) throws InterruptedException {
+    public void listenDirectQueue1(String message, Channel channel, @Header(AmqpHeaders.DELIVERY_TAG) long tag) throws InterruptedException, IOException {
         System.out.println("Consumer 1 received direct queue 1 message : " + message);
     }
 
@@ -56,7 +60,7 @@ public class DirectConsumer
             exchange = @Exchange(name = "hmall.direct", type = ExchangeTypes.DIRECT),
             key = {"red", "yellow"}
     ))
-    public void listenDirectQueue2(String message) throws InterruptedException {
+    public void listenDirectQueue2(String message, Channel channel, @Header(AmqpHeaders.DELIVERY_TAG) long tag) throws InterruptedException, IOException {
         System.out.println("Consumer 2 received direct queue 2 message = " + message);
     }
 
