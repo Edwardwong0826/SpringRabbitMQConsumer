@@ -47,6 +47,8 @@ public class AckConsumer {
     // RejectAndDontRequeueRecover - Default one, after attempts exhausted direct reject and discarded the message
     // ImmediateRequeueMessageRecover - After attempts exhausted, return nack and requeue back to RabbitMQ queue
     // RepublishMessageRecover - After attempts exhausted, route the message to specific exchange and queue
+
+    // By enable Spring retry, we can achieve at least once delivery for consumer but not idempotency
     @RabbitListener(queues = "simple.queue2")
     public void listenSimpleQueue(Message message, Channel channel) throws IOException {
         System.out.println("Simple queue 2 message = " + new String(message.getBody()));
