@@ -24,6 +24,17 @@ spring:
     username: hmall
     password: guest
     virtual-host: /hmall
+    listener:
+      simple:
+        prefetch: 1 # this force the consumer only fetch from the queue when consume finish, thus those higher performance consumer can handle more queue messages
+        acknowledge-mode: manual # by default acknowledge mode was none, we can set it to manual, auto or none
+        retry:
+          enabled: true # open retry mechanism when consumer failed to consume
+          initial-interval: 200ms # first wait time for initial retry
+          multiplier: 1
+          max-attempts: 3
+          stateless: true # if logic got do transaction, change to false save the context
+
   config:
     activate:
       on-profile: dev2

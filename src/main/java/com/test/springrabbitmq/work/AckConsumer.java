@@ -1,7 +1,11 @@
 package com.test.springrabbitmq.work;
 
+import com.rabbitmq.client.Channel;
+import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
+
+import java.io.IOException;
 
 @Component
 public class AckConsumer {
@@ -13,6 +17,9 @@ public class AckConsumer {
     // every message has unique tag, rabbitmq identify the message by this, so that can manual ack or nack
     // need to set acknowledge-mode: manual
     // for those message haven't ack, when the consumer is down, rabbitMQ will requeue back to channel and send other consumer continue to consume
+    // https://stackoverflow.com/questions/18418936/rabbitmq-and-relationship-between-channel-and-connection - refer this for channel in AMQP more details
+    // Channel simple info: It is a virtual connection inside a connection. When publishing or consuming messages from a queue
+    // it's all done over a channel Whereas Connection: It is a TCP connection between your application and the RabbitMQ broker.
 
     // If want to use RabbitMQ library to do manual ack, can do below
     // for manual ack first parameter is tag, second parameter is it acknowledge all messages in the channel
@@ -41,17 +48,24 @@ public class AckConsumer {
     // ImmediateRequeueMessageRecover - After attempts exhausted, return nack and requeue back to RabbitMQ queue
     // RepublishMessageRecover - After attempts exhausted, route the message to specific exchange and queue
     @RabbitListener(queues = "simple.queue2")
-    public void listenSimpleQueue(String message)
-    {
-        System.out.println("Simple queue 2 message = " + message);
+    public void listenSimpleQueue(Message message, Channel channel) throws IOException {
+        System.out.println("Simple queue 2 message = " + new String(message.getBody()));
 
         // Thread.sleep(30000);
+        // run in debug mode to simulate for spring acknowledge mode none and manual
+        // in the RabbitMQ UI queues, during debug we can see that Message got Ready and Unacked tab
+        // Ready - means the message waiting to be consumed by consumer
+        // Unacked - means message send to consumer already but yet to received ack from consumer
         // set acknowledge-mode: manual for manually do the acknowledgment using RabbitMQ library code
+
+        // this is the unique UUID for the message
+        // long tag = message.getMessageProperties().getDeliveryTag();
         // channel.basicAck(tag, true);
         // channel.basicNack(tag,true,true);
 
-        // run in debug mode to simulate for spring acknowledge mode none and auto
-        throw new RuntimeException("Intention");
+        // Below code is to simulate when there is exception throws, eventually RabbitMQ will try to retry resend by requeue
+        // once attempts exhausted, it will choose the action based on implementation of messageRecoverer, refer above info for MessageRecover interface
+        //throw new RuntimeException("Intention");
     }
 
 

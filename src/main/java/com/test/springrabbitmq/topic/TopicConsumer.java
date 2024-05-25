@@ -1,6 +1,8 @@
 package com.test.springrabbitmq.topic;
 
+import com.rabbitmq.client.Channel;
 import org.springframework.amqp.core.ExchangeTypes;
+import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.Exchange;
 import org.springframework.amqp.rabbit.annotation.Queue;
 import org.springframework.amqp.rabbit.annotation.QueueBinding;
@@ -57,8 +59,8 @@ public class TopicConsumer
             key = {"china.#"}
     ))
     @RabbitListener(queues = "topic.queue1")
-    public void listenTopicQueue1(String message) throws InterruptedException {
-        System.out.println("Consumer 1 received topic queue 1 message : " + message);
+    public void listenTopicQueue1(Message message, Channel channel) throws InterruptedException {
+        System.out.println("Consumer 1 received topic queue 1 message : " + new String(message.getBody()));
     }
 
     // topic.queue2 routing key = #.news
@@ -68,8 +70,8 @@ public class TopicConsumer
             exchange = @Exchange(name = "hmall.topic", type = ExchangeTypes.TOPIC),
             key = {"#.news"}
     ))
-    public void listenTopicQueue2(String message) throws InterruptedException {
-        System.out.println("Consumer 2 received topic queue 2 message = " + message);
+    public void listenTopicQueue2(Message message, Channel channel) throws InterruptedException {
+        System.out.println("Consumer 2 received topic queue 2 message = " + new String(message.getBody()));
     }
 
 }
