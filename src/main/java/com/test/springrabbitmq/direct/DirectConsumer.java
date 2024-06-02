@@ -18,30 +18,6 @@ import java.util.Arrays;
 public class DirectConsumer
 {
 
-//    @RabbitListener(bindings = {
-//            @QueueBinding(
-//                    value = @Queue,
-//                    exchange = @Exchange(value = "logs_direct", type = "direct"),
-//                    key = {"info","error","warning"}
-//            )
-//    })
-//    public void received1(String message)
-//    {
-//        System.out.println("message1 = " + message);
-//    }
-//
-//    @RabbitListener(bindings = {
-//            @QueueBinding(
-//                    value = @Queue,
-//                    exchange = @Exchange(value = "logs_direct", type = "direct"),
-//                    key = {"error"}
-//            )
-//    })
-//    public void received2(String message)
-//    {
-//        System.out.println("message2 = " + message);
-//    }
-
     // There is two ways to declare queue, exchange and binding in SpringAMQP
     // First way is use @Bean in configuration class
     // Second way is use @RabbitListener and recommended to use this as less tedious than first way

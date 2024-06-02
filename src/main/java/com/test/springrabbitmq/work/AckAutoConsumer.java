@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 
 @Component
-public class AckConsumer {
+public class AckAutoConsumer {
 
     // Message reply in RabbitMQ means does the consumer successfully consume the message or not
     // RabbitMQ use message manual ack the message will not lose, it will requeue to queue to retry consume by other
@@ -49,9 +49,15 @@ public class AckConsumer {
     // RepublishMessageRecover - After attempts exhausted, route the message to specific exchange and queue
 
     // By enable Spring retry, we can achieve at least once delivery for consumer but not idempotency
-    @RabbitListener(queues = "simple.queue2")
+
+    // 1. Non-durable message sent to exchange and in queue, return ACK
+    // 2. Durable message send to exchange and done persistent in disk, return ACK
+    // other reason return NACK
+
+    @RabbitListener(queues = "simple.queue")
     public void listenSimpleQueue(Message message, Channel channel) throws IOException {
-        System.out.println("Simple queue 2 message = " + new String(message.getBody()));
+
+        System.out.println("Simple queue message = " + new String(message.getBody()));
 
         // Thread.sleep(30000);
         // run in debug mode to simulate for spring acknowledge mode none and manual
@@ -60,14 +66,10 @@ public class AckConsumer {
         // Unacked - means message send to consumer already but yet to received ack from consumer
         // set acknowledge-mode: manual for manually do the acknowledgment using RabbitMQ library code
 
-        // this is the unique UUID for the message
-        // long tag = message.getMessageProperties().getDeliveryTag();
-        // channel.basicAck(tag, true);
-        // channel.basicNack(tag,true,true);
-
         // Below code is to simulate when there is exception throws, eventually RabbitMQ will try to retry resend by requeue
         // once attempts exhausted, it will choose the action based on implementation of messageRecoverer, refer above info for MessageRecover interface
         //throw new RuntimeException("Intention");
+
     }
 
 
