@@ -30,10 +30,10 @@ spring:
         acknowledge-mode: auto # by default acknowledge mode was none, we can set it to manual, auto or none. when manual we need manually return ack or nack by ourselves
         retry:
           enabled: true # open retry mechanism when consumer failed to consume
-          initial-interval: 200ms # first wait time for initial retry
+          initial-interval: 50ms # first wait time for initial retry
           multiplier: 1
           max-attempts: 3
-          stateless: true # if logic got do transaction, change to false save the context
+          stateless: false # if logic got do transaction, change to false save the context
 
   config:
     activate:
