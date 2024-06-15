@@ -34,6 +34,11 @@ spring:
           multiplier: 1
           max-attempts: 3
           stateless: false # if logic got do transaction, change to false save the context
+  redis:
+    host: 127.0.0.1
+    port: 6379
+    password: 61376554
+    database: 0
 
   config:
     activate:

@@ -17,6 +17,9 @@ public class idempotentConfiguration {
     @Bean
     public MessageConverter jacksonMessageConvertor(){
 
+        // usage of this Message Id
+        // https://stackoverflow.com/questions/37494605/why-need-messageid-in-amqp
+
         // why we set CreateMessageIds to true is because rabbitTemplate.convertAndSend() it will call convertMessageIfNecessary()
         // convertMessageIfNecessary() call getRequiredMessageConverter().toMessage(object, new MessageProperties());
         // then go to AbstractMessageConverter class call ToMessage(), in this class CreateMessageIds boolean is false
@@ -25,6 +28,7 @@ public class idempotentConfiguration {
 
         // we can also don't set this boolean to true, example use snowflake algorithm to ensure idempotency
         // means we generate unique UUID to messageProperties by ourselves
+
         Jackson2JsonMessageConverter jjmc = new Jackson2JsonMessageConverter();
         jjmc.setCreateMessageIds(true);
         return jjmc;
